@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 domain = 'example.com'
-box = 'ubuntu/trusty64'
+box = 'bento/centos-7.4'
 ram = 512
 
 puppet_nodes = [
@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
   puppet_nodes.each do |node|
     config.vm.define node[:hostname] do |node_config|
       node_config.vm.box = node[:box]
-      node_config.vm.box_url = 'https://atlas.hashicorp.com/' + node_config.vm.box
+      #node_config.vm.box_url = 'https://atlas.hashicorp.com/' + node_config.vm.box
       node_config.vm.hostname = node[:hostname] + '.' + domain
       node_config.vm.network :private_network, ip: node[:ip]
 
@@ -32,10 +32,13 @@ Vagrant.configure("2") do |config|
         ]
       end
 
+      config.vm.provision "shell", path: "manifests/puppet.sh"
+
       node_config.vm.provision :puppet do |puppet|
         puppet.manifests_path = 'provision/manifests'
         puppet.module_path = 'provision/modules'
       end
     end
+    #config.vm.provision "puppet"
   end
 end
