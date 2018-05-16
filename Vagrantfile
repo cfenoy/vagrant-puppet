@@ -33,6 +33,12 @@ Vagrant.configure("2") do |config|
       end
 
       config.vm.provision "shell", path: "manifests/puppet.sh"
+      if node[:hostname] == "puppet"
+        config.vm.provision "shell", inline: "gem query --name r10k --installed &> /dev/null || gem install -N -n /usr/bin r10k"
+      end
+      config.vm.synced_folder './control', '/etc/puppet/code/environments/vagrant'
+      config.vm.synced_folder './puppet', '/etc/puppet/puppet'
+      config.vm.synced_folder './r10k', '/etc/puppet/r10k'
 
       node_config.vm.provision :puppet do |puppet|
         puppet.manifests_path = 'provision/manifests'
