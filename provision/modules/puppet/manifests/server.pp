@@ -81,11 +81,11 @@ class puppet::server(
     require => Package[ 'puppetmaster' ],
   }
 
-  file { '/etc/puppet/manifests/nodes.pp':
-    ensure  => link,
-    target  => '/vagrant/nodes.pp',
-    require => Package[ 'puppetmaster' ],
-  }
+#  file { '/etc/puppet/manifests/nodes.pp':
+#    ensure  => link,
+#    target  => '/vagrant/nodes.pp',
+#    require => Package[ 'puppetmaster' ],
+#  }
 
   # initialize a template file then ignore
   file { '/vagrant/nodes.pp':
